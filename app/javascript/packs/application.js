@@ -18,5 +18,8 @@ require("channels")
 // Import all of the application's stylesheets.
 import '../stylesheets/application'
 
-// Require three.js module.
+// Load the three.js library.
 var THREE = require('three');
+
+// Render a basic three.js example scene.
+import '../src/hello_three'
