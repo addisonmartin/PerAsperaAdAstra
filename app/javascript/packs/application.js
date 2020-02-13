@@ -15,5 +15,8 @@ require("channels")
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+// Import all of the application's stylesheets.
+import '../stylesheets/application'
+
 // Require three.js module.
 var THREE = require('three');
