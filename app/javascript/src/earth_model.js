@@ -10,6 +10,7 @@ require('three/examples/js/controls/OrbitControls');
 // Only render the scene if the device supports WebGL rendering.
 if ( WEBGL.isWebGLAvailable() ) {
 
+    // Wait until the DOM is loaded to render anyything.
     document.addEventListener('DOMContentLoaded', function () {
         // The scene is where all the rendered objects will live in.
         var scene = new THREE.Scene();
