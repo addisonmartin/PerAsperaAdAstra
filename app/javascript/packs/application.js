@@ -18,5 +18,5 @@ require("channels")
 // Import all of the application's stylesheets.
 import '../stylesheets/application'
 
-// Render a basic three.js example scene.
-import '../src/hello_three'
+// Render a 3D model of the Earth.
+import '../src/earth_model'
