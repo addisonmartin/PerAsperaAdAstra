@@ -46,13 +46,37 @@ class SatellitesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_satellite
-      @satellite = Satellite.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def satellite_params
-      params.require(:satellite).permit(:norad_catalog_id, :international_designator, :name, :object_name, :object_type, :object_id, :object_number, :country, :launch_date, :launch_site, :decay_date, :launch_year, :launch_number, :launch_piece, :period, :inclination, :apogee, :perigee, :radar_cross_section_value, :radar_cross_section_size, :comment, :comment_code, :file, :current)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_satellite
+    @satellite = Satellite.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through:
+  def satellite_params
+    params.require(:satellite).permit(:norad_catalog_id,
+                                      :international_designator,
+                                      :name,
+                                      :object_name,
+                                      :object_type,
+                                      :object_id,
+                                      :object_number,
+                                      :country,
+                                      :launch_date,
+                                      :launch_site,
+                                      :decay_date,
+                                      :launch_year,
+                                      :launch_number,
+                                      :launch_piece,
+                                      :period,
+                                      :inclination,
+                                      :apogee,
+                                      :perigee,
+                                      :radar_cross_section_value,
+                                      :radar_cross_section_size,
+                                      :comment,
+                                      :comment_code,
+                                      :file,
+                                      :current)
+  end
 end
