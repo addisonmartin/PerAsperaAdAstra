@@ -3,6 +3,7 @@
 <table class="table table-dark table-striped table-bordered table-hover table-sm">
   <thead>
     <tr>
+      <th colspan="1"></th>
       <th>NORAD Catalog ID</th>
       <th>International Designator</th>
       <th>Name</th>
@@ -27,13 +28,19 @@
       <th>Comment Code</th>
       <th>File</th>
       <th>Current</th>
-      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @satellites.each do |satellite| %>
       <tr>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'View', satellite, class: 'btn btn-secondary' %>
+            <%= link_to 'Edit', edit_satellite_path(satellite), class: 'btn btn-info' %>
+            <%= link_to 'Delete', satellite, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+          </div>
+        </td>
         <td><%= satellite.norad_catalog_id %></td>
         <td><%= satellite.international_designator %></td>
         <td><%= satellite.name %></td>
@@ -58,14 +65,7 @@
         <td><%= satellite.comment_code %></td>
         <td><%= satellite.file %></td>
         <td><%= satellite.current %></td>
-        <td><%= link_to 'Show', satellite %></td>
-        <td><%= link_to 'Edit', edit_satellite_path(satellite) %></td>
-        <td><%= link_to 'Destroy', satellite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Satellite', new_satellite_path %>
