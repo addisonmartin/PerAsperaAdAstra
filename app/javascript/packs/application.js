@@ -27,4 +27,4 @@ document.addEventListener("turbolinks:load", () => {
 import '../stylesheets/application'
 
 // Render a 3D model of the Earth.
-import '../src/earth_model'
+// import '../src/earth_model'

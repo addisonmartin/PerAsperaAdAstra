@@ -6,6 +6,6 @@ Rails.application.routes.draw do
 
   # Creates the routes for the home controller, whose only action is index.
   get 'home/index'
-  # Sets the application's homepage to home's index action.
-  root 'home#index'
+  # Sets the application's homepage.
+  root 'satellites#index'
 end
