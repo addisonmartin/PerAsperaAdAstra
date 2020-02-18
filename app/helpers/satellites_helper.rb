@@ -3,7 +3,7 @@ require 'uri'
 
 module SatellitesHelper
 
-
+  # TODO: Refactor into multiple methods.
   def get_all_satellites_from_space_track_org
     login_url = 'https://www.space-track.org/ajaxauth/login'
     query_url = '/basicspacedata/query/class/satcat/orderby/norad_cat_id%20asc'
