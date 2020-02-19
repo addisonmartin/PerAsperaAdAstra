@@ -1,4 +1,14 @@
 <h1>Satellites</h1>
+
+<%= search_form_for @q do |f| %>
+
+  <%= f.label :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont, "Search" %>
+  <%= f.search_field :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont %>
+
+  <%= f.submit class: 'btn btn-primary' %>
+  <%= link_to 'Clear', satellites_path, class: 'btn btn-secondary' %>
+<% end %>
+
 <%== pagy_info(@pagy) %>
 
 <table class="table table-dark table-striped table-bordered table-hover table-sm">
