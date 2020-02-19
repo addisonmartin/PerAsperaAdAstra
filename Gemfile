@@ -18,6 +18,10 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 # Paper Trail is used to track each change to every model.
 gem 'paper_trail'
+# Pagy is used to paginate models for display in views.
+gem 'pagy'
+# OJ Is used by pagy's Javascript to increase performance.
+gem 'oj'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

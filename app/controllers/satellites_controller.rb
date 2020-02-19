@@ -3,7 +3,8 @@ class SatellitesController < ApplicationController
 
   # GET /satellites
   def index
-    @satellites = Satellite.all
+    # Paginate the models for display.
+    @pagy, @satellites = pagy(Satellite.all)
   end
 
   # GET /satellites/1

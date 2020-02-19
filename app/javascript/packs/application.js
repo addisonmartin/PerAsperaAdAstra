@@ -23,6 +23,9 @@ document.addEventListener("turbolinks:load", () => {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
+// Import pagination's Javascript.
+import '../src/pagy.js.erb'
+
 // Import all of the application's stylesheets.
 import '../stylesheets/application'
 
