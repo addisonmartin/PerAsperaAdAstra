@@ -22,6 +22,8 @@ gem 'paper_trail'
 gem 'pagy'
 # OJ Is used by pagy's Javascript to increase performance.
 gem 'oj'
+# Ransack is used to sort and filter models from views.
+gem 'ransack'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

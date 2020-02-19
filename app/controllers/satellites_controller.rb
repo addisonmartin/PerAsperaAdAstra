@@ -3,8 +3,10 @@ class SatellitesController < ApplicationController
 
   # GET /satellites
   def index
-    # Paginate the models for display.
-    @pagy, @satellites = pagy(Satellite.all)
+    # Sort and filter the satellites.
+    @q = Satellite.ransack(params[:q])
+    # Paginate the result of the filter and sort.
+    @pagy, @satellites = pagy(@q.result)
   end
 
   # GET /satellites/1
