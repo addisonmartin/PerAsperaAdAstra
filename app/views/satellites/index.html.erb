@@ -19,7 +19,7 @@
       <th>Perigee</th>
       <th>Radar Cross Section Size</th>
       <th>Comment</th>
-    </tr>
+     </tr>
   </thead>
 
   <tbody>
@@ -27,8 +27,8 @@
       <tr>
         <td>
           <div class="btn-group">
-            <%= link_to 'View', satellite, class: 'btn btn-sm btn-secondary' %>
-            <%= link_to 'Edit', edit_satellite_path(satellite), class: 'btn btn-sm btn-info' %>
+            <%= link_to 'View', satellite, class: 'btn btn-sm btn-primary' %>
+            <%= link_to 'Edit', edit_satellite_path(satellite), class: 'btn btn-sm btn-secondary' %>
             <%= link_to 'Delete', satellite, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
           </div>
         </td>
