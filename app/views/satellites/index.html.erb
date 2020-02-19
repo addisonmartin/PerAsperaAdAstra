@@ -5,6 +5,12 @@
   <%= f.label :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont, "Search" %>
   <%= f.search_field :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont %>
 
+  <%= f.label :launch_date_eq, 'Launch Date Equals' %>
+  <%= f.search_field :launch_date_eq %>
+
+  <%= f.label :decay_date_eq, 'Decay Date Equals' %>
+  <%= f.search_field :decay_date_eq %>
+
   <%= f.submit class: 'btn btn-primary' %>
   <%= link_to 'Clear', satellites_path, class: 'btn btn-secondary' %>
 <% end %>
