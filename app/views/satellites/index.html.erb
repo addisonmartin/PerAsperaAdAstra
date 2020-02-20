@@ -42,11 +42,11 @@
         <th><%= sort_link(@q, :launch_date, 'Launch Date')%></th>
         <th><%= sort_link(@q, :launch_site, 'Launch Site')%></th>
         <th><%= sort_link(@q, :decay_date, 'Decay Date')%></th>
-        <th><%= sort_link(@q, :period)%></th>
-        <th><%= sort_link(@q, :inclination)%></th>
-        <th><%= sort_link(@q, :apogee)%></th>
-        <th><%= sort_link(@q, :perigee)%></th>
-        <th><%= sort_link(@q, :radar_cross_section_size, 'Radar Cross Section Size')%></th>
+        <th><%= sort_link(@q, :period, 'Period (min)')%></th>
+        <th><%= sort_link(@q, :inclination, 'Inclination (degrees)')%></th>
+        <th><%= sort_link(@q, :apogee, 'Apogee (km)')%></th>
+        <th><%= sort_link(@q, :perigee, 'Perigee (km)')%></th>
+        <th><%= sort_link(@q, :radar_cross_section_size, 'Radar Cross Section Size (m^2)')%></th>
         <th><%= sort_link(@q, :comment)%></th>
        </tr>
     </thead>
@@ -106,6 +106,13 @@
       <tr>
         <td>Inclination</td>
         <td>The angle between the equator and the orbit plane. Units are degrees.</td>
+      </tr>
+      <tr>
+        <td>International Designator</td>
+        <td>The first two characters designate the launch year of the object.
+          The next 3 characters indicate the launch number, starting from the beginning of the year.
+          The remainder of the field (1 to 3 characters) indicates the piece of the launch. Piece 'A' is usually the payload.
+        </td>
       </tr>
       <tr>
         <td>Perigee</td>
