@@ -9,9 +9,9 @@ class CreateSatellites < ActiveRecord::Migration[6.0]
       t.text :object_type, null: true, limit: 12
       t.text :object_id, null: false, limit: 12
       t.integer :object_number, null: false, unsigned: true, precision: 8
-      t.text :country, null: false, limit: 6
+      t.text :country, null: false
       t.date :launch_date, null: true
-      t.text :launch_site, null: true, limit: 5
+      t.text :launch_site, null: true
       t.date :decay_date, null: true
       t.integer :launch_year, null: false, unsigned: true, precision: 5
       t.integer :launch_number, null: false, unsigned: true, precision: 5
@@ -21,7 +21,7 @@ class CreateSatellites < ActiveRecord::Migration[6.0]
       t.bigint :apogee, null: true, precision: 12
       t.bigint :perigee, null: true, precision: 12
       t.integer :radar_cross_section_value, null: false, precision: 1
-      t.text :radar_cross_section_size, null: true, limit: 6
+      t.text :radar_cross_section_size, null: true
       t.text :comment, null: true, limit: 32
       t.integer :comment_code, null: true, unsigned: true, precision: 3
       t.integer :file, null: false, unsigned: true, precision: 5
