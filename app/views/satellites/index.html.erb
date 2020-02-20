@@ -65,11 +65,7 @@
       <% @satellites.each do |satellite| %>
         <tr>
           <td>
-            <div class="btn-group">
-              <%= link_to 'View', satellite, class: 'btn btn-sm btn-primary' %>
-              <%= link_to 'Edit', edit_satellite_path(satellite), class: 'btn btn-sm btn-secondary' %>
-              <%= link_to 'Delete', satellite, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
-            </div>
+            <%= link_to 'View', satellite, class: 'btn btn-sm btn-primary' %>
           </td>
           <td><%= satellite.norad_catalog_id %></td>
           <td><%= satellite.international_designator %></td>
