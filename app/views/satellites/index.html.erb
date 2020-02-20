@@ -1,30 +1,40 @@
 <h1>Satellites</h1>
 
-<%= search_form_for @q do |f| %>
-
-  <%= f.label :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont, "Search" %>
-  <%= f.search_field :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont %>
-
-  <%= f.label :object_type_cont, 'Object Type' %>
-  <%= f.collection_select :object_type_cont, ['', 'Debris', 'Rocket Body', 'Payload', 'TBA'], :to_s, :to_s %>
-
-  <%= f.label :launch_date_eq, 'Launch Date' %>
-  <%= f.search_field :launch_date_eq %>
-
-  <%= f.label :decay_date_eq, 'Decay Date' %>
-  <%= f.search_field :decay_date_eq %>
-
-  <%= f.label :apogee_eq, 'Apogee' %>
-  <%= f.search_field :apogee_eq %>
-
-  <%= f.label :perigee_eq, 'Perigee' %>
-  <%= f.search_field :perigee_eq %>
-
-  <%= f.label :inclination_eq, 'Inclination' %>
-  <%= f.search_field :inclination_eq %>
-
-  <%= f.submit class: 'btn btn-primary' %>
-  <%= link_to 'Clear', satellites_path, class: 'btn btn-secondary' %>
+<%= search_form_for @q, class: 'form-inline' do |f| %>
+  <div class="form-row">
+    <div class="col-auto">
+      <%= f.label :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont, "Search" %>
+      <%= f.search_field :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto">
+      <%= f.label :object_type_cont, 'Object Type' %>
+      <%= f.collection_select :object_type_cont, ['', 'Debris', 'Rocket Body', 'Payload', 'TBA'], :to_s, :to_s, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto">
+      <%= f.label :launch_date_eq, 'Launch Date' %>
+      <%= f.search_field :launch_date_eq, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto">
+      <%= f.label :decay_date_eq, 'Decay Date' %>
+      <%= f.search_field :decay_date_eq, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto">
+      <%= f.label :apogee_eq, 'Apogee' %>
+      <%= f.search_field :apogee_eq, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto">
+      <%= f.label :perigee_eq, 'Perigee' %>
+      <%= f.search_field :perigee_eq, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto">
+      <%= f.label :inclination_eq, 'Inclination' %>
+      <%= f.search_field :inclination_eq, class: 'form-control form-control-sm' %>
+    </div>
+    <div class="col-auto align-self-end">
+      <%= f.submit class: 'btn btn-primary' %>
+      <%= link_to 'Clear', satellites_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
 <% end %>
 
 <%== pagy_info(@pagy) %>
