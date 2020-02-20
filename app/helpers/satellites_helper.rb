@@ -50,8 +50,8 @@ module SatellitesHelper
 
     satellite_with_proper_keys['norad_catalog_id'] = satellite['NORAD_CAT_ID']
     satellite_with_proper_keys['international_designator'] = satellite['INTLDES']
-    satellite_with_proper_keys['name'] = satellite['SATNAME'].titleize
-    satellite_with_proper_keys['object_name'] = satellite['OBJECT_NAME'].titleize
+    satellite_with_proper_keys['name'] = satellite['SATNAME']
+    satellite_with_proper_keys['object_name'] = satellite['OBJECT_NAME']
     satellite_with_proper_keys['object_type'] = satellite['OBJECT_TYPE'].titleize
     satellite_with_proper_keys['object_id'] = satellite['OBJECT_ID']
     satellite_with_proper_keys['object_number'] = satellite['OBJECT_NUMBER']
@@ -233,9 +233,9 @@ module SatellitesHelper
       radar_cross_section_size
     else
       conversion = {
-        'SMALL': 'Small (area < 0.1 m^2)',
-        'MEDIUM': 'Medium (0.1 m^2 < area < 1.0 m^2)',
-        'LARGE': 'Large (area > 1.0 m^2)'
+        'SMALL': 'Small (area < 0.1)',
+        'MEDIUM': 'Medium (0.1 < area < 1.0)',
+        'LARGE': 'Large (area > 1.0)'
       }
 
       conversion[radar_cross_section_size.to_sym]
