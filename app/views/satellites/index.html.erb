@@ -29,55 +29,57 @@
 
 <%== pagy_info(@pagy) %>
 
-<table class="table table-dark table-striped table-bordered table-hover table-sm">
-  <thead>
-    <tr>
-      <th colspan="1"></th>
-      <th><%= sort_link(@q, :norad_catalog_id, 'ID')%></th>
-      <th><%= sort_link(@q, :international_designator, 'International Designator')%></th>
-      <th><%= sort_link(@q, :name)%></th>
-      <th><%= sort_link(@q, :object_type, 'Object Type')%></th>
-      <th><%= sort_link(@q, :country)%></th>
-      <th><%= sort_link(@q, :launch_date, 'Launch Date')%></th>
-      <th><%= sort_link(@q, :launch_site, 'Launch Site')%></th>
-      <th><%= sort_link(@q, :decay_date, 'Decay Date')%></th>
-      <th><%= sort_link(@q, :period)%></th>
-      <th><%= sort_link(@q, :inclination)%></th>
-      <th><%= sort_link(@q, :apogee)%></th>
-      <th><%= sort_link(@q, :perigee)%></th>
-      <th><%= sort_link(@q, :radar_cross_section_size, 'Radar Cross Section Size')%></th>
-      <th><%= sort_link(@q, :comment)%></th>
-     </tr>
-  </thead>
-
-  <tbody>
-    <% @satellites.each do |satellite| %>
+<div class="table-responsive">
+  <table class="table table-dark table-striped table-bordered table-hover table-sm">
+    <thead>
       <tr>
-        <td>
-          <div class="btn-group">
-            <%= link_to 'View', satellite, class: 'btn btn-sm btn-primary' %>
-            <%= link_to 'Edit', edit_satellite_path(satellite), class: 'btn btn-sm btn-secondary' %>
-            <%= link_to 'Delete', satellite, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
-          </div>
-        </td>
-        <td><%= satellite.norad_catalog_id %></td>
-        <td><%= satellite.international_designator %></td>
-        <td><%= satellite.name %></td>
-        <td><%= satellite.object_type %></td>
-        <td><%= satellite.country %></td>
-        <td><%= satellite.launch_date %></td>
-        <td><%= satellite.launch_site %></td>
-        <td><%= satellite.decay_date %></td>
-        <td><%= satellite.period %></td>
-        <td><%= satellite.inclination %></td>
-        <td><%= satellite.apogee %></td>
-        <td><%= satellite.perigee %></td>
-        <td><%= satellite.radar_cross_section_size %></td>
-        <td><%= satellite.comment %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <th colspan="1"></th>
+        <th><%= sort_link(@q, :norad_catalog_id, 'ID')%></th>
+        <th><%= sort_link(@q, :international_designator, 'International Designator')%></th>
+        <th><%= sort_link(@q, :name)%></th>
+        <th><%= sort_link(@q, :object_type, 'Object Type')%></th>
+        <th><%= sort_link(@q, :country)%></th>
+        <th><%= sort_link(@q, :launch_date, 'Launch Date')%></th>
+        <th><%= sort_link(@q, :launch_site, 'Launch Site')%></th>
+        <th><%= sort_link(@q, :decay_date, 'Decay Date')%></th>
+        <th><%= sort_link(@q, :period)%></th>
+        <th><%= sort_link(@q, :inclination)%></th>
+        <th><%= sort_link(@q, :apogee)%></th>
+        <th><%= sort_link(@q, :perigee)%></th>
+        <th><%= sort_link(@q, :radar_cross_section_size, 'Radar Cross Section Size')%></th>
+        <th><%= sort_link(@q, :comment)%></th>
+       </tr>
+    </thead>
+
+    <tbody>
+      <% @satellites.each do |satellite| %>
+        <tr>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'View', satellite, class: 'btn btn-sm btn-primary' %>
+              <%= link_to 'Edit', edit_satellite_path(satellite), class: 'btn btn-sm btn-secondary' %>
+              <%= link_to 'Delete', satellite, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+            </div>
+          </td>
+          <td><%= satellite.norad_catalog_id %></td>
+          <td><%= satellite.international_designator %></td>
+          <td><%= satellite.name %></td>
+          <td><%= satellite.object_type %></td>
+          <td><%= satellite.country %></td>
+          <td><%= satellite.launch_date %></td>
+          <td><%= satellite.launch_site %></td>
+          <td><%= satellite.decay_date %></td>
+          <td><%= satellite.period %></td>
+          <td><%= satellite.inclination %></td>
+          <td><%= satellite.apogee %></td>
+          <td><%= satellite.perigee %></td>
+          <td><%= satellite.radar_cross_section_size %></td>
+          <td><%= satellite.comment %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <%== pagy_items_selector_js(@pagy) %>
 <br>
 <%== pagy_bootstrap_combo_nav_js(@pagy) %>
