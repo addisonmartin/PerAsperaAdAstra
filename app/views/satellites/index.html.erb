@@ -72,9 +72,9 @@
           <td><%= satellite.name %></td>
           <td><%= satellite.object_type %></td>
           <td><%= satellite.country %></td>
-          <td><%= satellite.launch_date %></td>
+          <td><%= format_date(satellite.launch_date) %></td>
           <td><%= satellite.launch_site %></td>
-          <td><%= satellite.decay_date %></td>
+          <td><%= format_date(satellite.decay_date) %></td>
           <td><%= satellite.period %></td>
           <td><%= satellite.inclination %></td>
           <td><%= satellite.apogee %></td>
