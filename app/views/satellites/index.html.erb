@@ -5,11 +5,23 @@
   <%= f.label :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont, "Search" %>
   <%= f.search_field :international_designator_or_name_or_object_type_or_country_or_launch_site_or_radar_cross_section_size_or_comment_cont %>
 
-  <%= f.label :launch_date_eq, 'Launch Date Equals' %>
+  <%= f.label :object_type_cont, 'Object Type' %>
+  <%= f.collection_select :object_type_cont, ['', 'Debris', 'Rocket Body', 'Payload', 'TBA'], :to_s, :to_s %>
+
+  <%= f.label :launch_date_eq, 'Launch Date' %>
   <%= f.search_field :launch_date_eq %>
 
-  <%= f.label :decay_date_eq, 'Decay Date Equals' %>
+  <%= f.label :decay_date_eq, 'Decay Date' %>
   <%= f.search_field :decay_date_eq %>
+
+  <%= f.label :apogee_eq, 'Apogee' %>
+  <%= f.search_field :apogee_eq %>
+
+  <%= f.label :perigee_eq, 'Perigee' %>
+  <%= f.search_field :perigee_eq %>
+
+  <%= f.label :inclination_eq, 'Inclination' %>
+  <%= f.search_field :inclination_eq %>
 
   <%= f.submit class: 'btn btn-primary' %>
   <%= link_to 'Clear', satellites_path, class: 'btn btn-secondary' %>
@@ -21,7 +33,7 @@
   <thead>
     <tr>
       <th colspan="1"></th>
-      <th><%= sort_link(@q, :norad_catalog_id, 'NORAD Catalog ID')%></th>
+      <th><%= sort_link(@q, :norad_catalog_id, 'ID')%></th>
       <th><%= sort_link(@q, :international_designator, 'International Designator')%></th>
       <th><%= sort_link(@q, :name)%></th>
       <th><%= sort_link(@q, :object_type, 'Object Type')%></th>
