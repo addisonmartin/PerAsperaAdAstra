@@ -1,121 +1,119 @@
-<p>
-  <strong>Norad Catalog ID:</strong>
-  <%= @satellite.norad_catalog_id %>
-</p>
+<h1>Satellite: <%= @satellite.name %></h1>
 
-<p>
-  <strong>International Designator:</strong>
-  <%= @satellite.international_designator %>
-</p>
+<div class="table-responsive">
+  <table class="table table-secondary table-striped table-bordered table-hover table-sm">
+    <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+    </thead>
 
-<p>
-  <strong>Name:</strong>
-  <%= @satellite.name %>
-</p>
+    <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><%= @satellite.norad_catalog_id %></td>
+    </tr>
+    <tr>
+      <td><strong>International Designator</strong></td>
+      <td><%= @satellite.international_designator %></td>
+    </tr>
+    <tr>
+      <td><strong>Name</strong></td>
+      <td><%= @satellite.name %></td>
+    </tr>
+    <tr>
+      <td><strong>Object Type</strong></td>
+      <td><%= @satellite.object_type %></td>
+    </tr>
+    <tr>
+      <td><strong>Country</strong></td>
+      <td><%= @satellite.country %></td>
+    </tr>
+    <tr>
+      <td><strong>Launch Date</strong></td>
+      <td><%= @satellite.launch_date %></td>
+    </tr>
+    <tr>
+      <td><strong>Launch Site</strong></td>
+      <td><%= @satellite.launch_site %></td>
+    </tr>
+    <tr>
+      <td><strong>Decay Date</strong></td>
+      <td><%= @satellite.decay_date %></td>
+    </tr>
+    <tr>
+      <td><strong>Period (min)</strong></td>
+      <td><%= @satellite.period %></td>
+    </tr>
+    <tr>
+      <td><strong>Inclination (degrees)</strong></td>
+      <td><%= @satellite.inclination %></td>
+    </tr>
+    <tr>
+      <td><strong>Apogee (km)</strong></td>
+      <td><%= @satellite.apogee %></td>
+    </tr>
+    <tr>
+      <td><strong>Perigee (km)</strong></td>
+      <td><%= @satellite.perigee %></td>
+    </tr>
+    <tr>
+      <td><strong>Radar Cross Section Size (m^2)</strong></td>
+      <td><%= @satellite.radar_cross_section_size %></td>
+    </tr>
+    <tr>
+      <td><strong>Comment</strong></td>
+      <td><%= @satellite.comment %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
-<p>
-  <strong>Object Name:</strong>
-  <%= @satellite.object_name %>
-</p>
+<h2>Legend</h2>
+<div class="table-responsive">
+  <table class="table table-secondary table-striped table-bordered table-hover table-sm">
+    <thead>
+    <tr>
+      <th>Term</th>
+      <th>Description</th>
+    </tr>
+    </thead>
 
-<p>
-  <strong>Object Type:</strong>
-  <%= @satellite.object_type %>
-</p>
-
-<p>
-  <strong>Object ID:</strong>
-  <%= @satellite.object_id %>
-</p>
-
-<p>
-  <strong>Object Number:</strong>
-  <%= @satellite.object_number %>
-</p>
-
-<p>
-  <strong>Country:</strong>
-  <%= @satellite.country %>
-</p>
-
-<p>
-  <strong>Launch Date:</strong>
-  <%= @satellite.launch_date %>
-</p>
-
-<p>
-  <strong>Launch Site:</strong>
-  <%= @satellite.launch_site %>
-</p>
-
-<p>
-  <strong>Decay Date:</strong>
-  <%= @satellite.decay_date %>
-</p>
-
-<p>
-  <strong>Launch Year:</strong>
-  <%= @satellite.launch_year %>
-</p>
-
-<p>
-  <strong>Launch Number:</strong>
-  <%= @satellite.launch_number %>
-</p>
-
-<p>
-  <strong>Launch Piece:</strong>
-  <%= @satellite.launch_piece %>
-</p>
-
-<p>
-  <strong>Period:</strong>
-  <%= @satellite.period %>
-</p>
-
-<p>
-  <strong>Inclination:</strong>
-  <%= @satellite.inclination %>
-</p>
-
-<p>
-  <strong>Apogee:</strong>
-  <%= @satellite.apogee %>
-</p>
-
-<p>
-  <strong>Perigee:</strong>
-  <%= @satellite.perigee %>
-</p>
-
-<p>
-  <strong>Radar Cross Section Value:</strong>
-  <%= @satellite.radar_cross_section_value %>
-</p>
-
-<p>
-  <strong>Radar Cross Section Size:</strong>
-  <%= @satellite.radar_cross_section_size %>
-</p>
-
-<p>
-  <strong>Comment:</strong>
-  <%= @satellite.comment %>
-</p>
-
-<p>
-  <strong>Comment Code:</strong>
-  <%= @satellite.comment_code %>
-</p>
-
-<p>
-  <strong>File:</strong>
-  <%= @satellite.file %>
-</p>
-
-<p>
-  <strong>Current:</strong>
-  <%= @satellite.current %>
-</p>
-
-<%= link_to 'Back', satellites_path %>
+    <tbody>
+    <tr>
+      <td>Apogee</td>
+      <td>Point in the orbit where an Earth satellite is farthest from the Earth. Units are kilometers.</td>
+    </tr>
+    <tr>
+      <td>Decay Date</td>
+      <td>Date object reentered the earth's atmosphere.</td>
+    </tr>
+    <tr>
+      <td>Inclination</td>
+      <td>The angle between the equator and the orbit plane. Units are degrees.</td>
+    </tr>
+    <tr>
+      <td>International Designator</td>
+      <td>The first two characters designate the launch year of the object.
+        The next 3 characters indicate the launch number, starting from the beginning of the year.
+        The remainder of the field (1 to 3 characters) indicates the piece of the launch. Piece 'A' is usually the payload.
+      </td>
+    </tr>
+    <tr>
+      <td>Perigee</td>
+      <td>Point in the orbit where an Earth satellite is closest to the Earth. Units are kilometers.</td>
+    </tr>
+    <tr>
+      <td>Period</td>
+      <td>The time an object takes to make one full orbit. Units are minutes.</td>
+    </tr>
+    <tr>
+      <td>Radar Cross Section Size</td>
+      <td>A measure of how detectable an object is by radar. Units are square meters.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<%= link_to 'Back', :back, class: 'btn btn-primary' %>
+<br><br>
