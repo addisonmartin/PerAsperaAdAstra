@@ -3,36 +3,45 @@ require 'uri'
 
 module SatellitesHelper
 
-  # TODO: Refactor into multiple methods.
   def get_all_satellites_from_space_track_org
     login_url = 'https://www.space-track.org/ajaxauth/login'
     query_url = '/basicspacedata/query/class/satcat/orderby/norad_cat_id%20asc'
+    logout_url = '/ajaxauth/logout'
 
-    # Setup a connection to space-track.org
+    #
+    # Setup a connection to https://www.space-track.org
+    #
     uri = URI.parse(login_url)
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
-    login_request = Net::HTTP::Post.new(uri.request_uri)
 
+    #
+    # Login to space-track.org, and store the cookie for future requests.
+    #
+    login_request = Net::HTTP::Post.new(uri.request_uri)
     username = Rails.application.credentials.space_track_org_username
     password = Rails.application.credentials.space_track_org_password
     # Attach the username and password to the login request.
     login_request.body = "identity=#{username}&password=#{password}"
     # Make the login request.
     login_response = https.request(login_request)
+    # Save the cookie returned from logging in.
+    cookie = login_response.response['set-cookie']
 
-    login_cookies = login_response.response['set-cookie']
-    # Setup the query request.
-    request = Net::HTTP::Get.new(query_url)
+    #
+    # Query the satellite catalog from space-track.org
+    #
+    query_request = Net::HTTP::Get.new(query_url)
     # Attach the cookie from the login request to the query request.
-    request['Cookie'] = login_cookies
+    query_request['Cookie'] = cookie
     # Make the query.
-    response = https.request(request)
+    response = https.request(query_request)
+    # Store the returned satellites in the application database.
     satellites = JSON.parse(response.body)
-
     satellites.each do |satellite|
+      # Convert the satellite keys from space-track.org format, to the format used in the application.
       satellite_with_proper_keys = convert_to_proper_keys(satellite)
-
+      # Don't save duplicate satellites in the database.
       begin
         Satellite.new(satellite_with_proper_keys).save!
       rescue ActiveRecord::RecordNotUnique => e
@@ -40,7 +49,14 @@ module SatellitesHelper
       end
     end
 
-    # TODO Send logout request!
+    #
+    # Logout from space-track.org
+    #
+    logout_request = Net::HTTP::Get.new(logout_url)
+    # Attach the cookie from the login request to the logout request.
+    logout_request['Cookie'] = cookie
+    # Make the logout request.
+    https.request(logout_request)
   end
 
   private
