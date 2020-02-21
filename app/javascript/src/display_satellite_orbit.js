@@ -13,6 +13,8 @@ document.addEventListener("turbolinks:load", () => {
 
     // Only render the scene if the user's device supports WebGL rendering.
     if ( WEBGL.isWebGLAvailable() ) {
+        //The satellite information from Rails.
+        var satellite = $('.satellite-information').data('satellite');
         // The div that the three.js is rendered within.
         var container = document.getElementById('satellite-orbit-view');
         // The scene is what all the rendered objects will live in.
@@ -60,6 +62,21 @@ document.addEventListener("turbolinks:load", () => {
             // Log any errors that occur when loading the model.
             console.error( error );
         });
+
+        // Add an ellipse in the shape of the satellite's orbit.
+        var orbit_curve = new THREE.EllipseCurve(
+            0,  0,
+            satellite['apogee'], satellite['pergee'],
+            0,  2 * Math.PI,
+            false,
+            (satellite['inclination'] * (Math.PI / 180))
+        );
+        var points = orbit_curve.getPoints( 50 );
+        var geometry = new THREE.BufferGeometry().setFromPoints( points );
+        var material = new THREE.LineBasicMaterial( { color : 0xffffff } );
+        var orbit = new THREE.Line( geometry, material );
+
+        scene.add( orbit );
 
         // Render the scene.
         function animate() {
