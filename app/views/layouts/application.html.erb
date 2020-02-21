@@ -13,11 +13,11 @@
 
     <title>Per Aspera Ad Astra</title>
   </head>
-
-  <body>
+  <!-- Append the Rail's controller name and action name, so page specific Javascript can be run. -->
+  <%= content_tag :body, data: {controller: controller_name, action: action_name} do %>
     <%= render 'layouts/alerts' %>
-    <div class="container-fluid bg-dark text-white" id="container">
+    <div class="container-fluid bg-dark text-white">
       <%= yield %>
     </div>
-  </body>
+  <% end %>
 </html>
