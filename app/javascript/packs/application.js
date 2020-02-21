@@ -29,5 +29,5 @@ import '../src/pagy.js.erb'
 // Import all of the application's stylesheets.
 import '../stylesheets/application'
 
-// Render a 3D model of the Earth.
-// import '../src/earth_model'
+// Display a satellite's orbit with three.js, only on the satellite's show page.
+import '../src/display_satellite_orbit'

@@ -1,3 +1,7 @@
+<!-- Used to pass the satellite's information to the pages Javascript. -->
+<%= content_tag :div, class: "satellite-information", data: { satellite: @satellite } do %>
+<% end %>
+
 <h1>Satellite: <%= @satellite.name %></h1>
 
 <div class="table-responsive">
@@ -68,6 +72,11 @@
     </tr>
     </tbody>
   </table>
+</div>
+
+<h2>Orbit View</h2>
+<div id="satellite-orbit-view">
+  <!-- Satellite's orbit is rendered with three.js here. -->
 </div>
 
 <h2>Legend</h2>
