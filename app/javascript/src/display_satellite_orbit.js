@@ -28,8 +28,8 @@ document.addEventListener("turbolinks:load", () => {
         // Fourth option: far clipping plane.
         // Objects further away from the camera than far clipping plane will not be rendered.
         // Near and far clipping plane can affect performance!
-        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-        camera.position.set( 0, 1000, 0 );
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100000 );
+        camera.position.set( 0, 12000, 0 );
         // Use WebGL as the renderer.
         var renderer = new THREE.WebGLRenderer();
         // Sets the size for the renderer to render the app.
@@ -41,7 +41,7 @@ document.addEventListener("turbolinks:load", () => {
         // Enables orbit controls:
         // Clicking and dragging mouse rotates the camera, scrolling with the mouse wheel changes zoom.
         var controls = new THREE.OrbitControls( camera, container );
-        controls.target.set(0, 5, 0);
+        controls.target.set(0, 0, 0);
 
         // Adds a white, ambient light to illuminate the model and scene.
         var light = new THREE.AmbientLight( 0xffffff );
@@ -51,8 +51,19 @@ document.addEventListener("turbolinks:load", () => {
         // Load a 3D model of Earth.
         var loader = new THREE.GLTFLoader();
         loader.load('/assets/Earth.glb', function ( gltf ) {
+            var gltfScene = gltf.scene;
+            // Scale the model so 1 three.js unit = 1 km.
+            gltfScene.scale.set(12.75627, 12.75627, 12.75627);
+
+            // Rotate the model so the equator faces the camera at its initial position.
+            // var rotationMatrix = new THREE.Matrix4();
+            // var axis = new THREE.Vector3(1, 1, 0);
+            // rotationMatrix.makeRotationAxis(axis.normalize(), -90);
+            // gltfScene.matrix.multiply(rotationMatrix);
+            // gltfScene.rotation.setFromRotationMatrix(gltfScene.matrix);
+
             // Add the 3D model to the scene.
-            scene.add( gltf.scene );
+            scene.add( gltfScene );
 
         }, function ( xhr ) {
             // Log the loading progress of the model.
@@ -66,14 +77,14 @@ document.addEventListener("turbolinks:load", () => {
         // Add an ellipse in the shape of the satellite's orbit.
         var orbit_curve = new THREE.EllipseCurve(
             0,  0,
-            satellite['apogee'], satellite['pergee'],
+            satellite['apogee'] + 6378.135, -1 * (satellite['pergee'] + 6378.135),
             0,  2 * Math.PI,
             false,
-            (satellite['inclination'] * (Math.PI / 180))
+            (satellite['inclination'])
         );
         var points = orbit_curve.getPoints( 50 );
         var geometry = new THREE.BufferGeometry().setFromPoints( points );
-        var material = new THREE.LineBasicMaterial( { color : 0xffffff } );
+        var material = new THREE.LineBasicMaterial( { color : 0xbfff00 } );
         var orbit = new THREE.Line( geometry, material );
 
         scene.add( orbit );
