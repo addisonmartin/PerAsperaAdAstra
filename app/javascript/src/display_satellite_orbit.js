@@ -29,7 +29,7 @@ document.addEventListener("turbolinks:load", () => {
         // Objects further away from the camera than far clipping plane will not be rendered.
         // Near and far clipping plane can affect performance!
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100000 );
-        camera.position.set( 0, 12000, 0 );
+        camera.position.set( 0, 100, 0 );
         // Use WebGL as the renderer.
         var renderer = new THREE.WebGLRenderer();
         // Sets the size for the renderer to render the app.
@@ -53,7 +53,7 @@ document.addEventListener("turbolinks:load", () => {
         loader.load('/assets/Earth.glb', function ( gltf ) {
             var gltfScene = gltf.scene;
             // Scale the model so 1 three.js unit = 1 km.
-            gltfScene.scale.set(12.75627, 12.75627, 12.75627);
+            gltfScene.scale.set(1/783.928217261, 1/783.928217261, 1/783.928217261);
 
             // Rotate the model so the equator faces the camera at its initial position.
             // var rotationMatrix = new THREE.Matrix4();
@@ -77,12 +77,12 @@ document.addEventListener("turbolinks:load", () => {
         // Add an ellipse in the shape of the satellite's orbit.
         var orbit_curve = new THREE.EllipseCurve(
             0,  0,
-            satellite['apogee'] + 6378.135, -1 * (satellite['pergee'] + 6378.135),
+            (satellite['apogee'] + 6378.135) / 10000, -1 * ((satellite['pergee'] + 6378.135) / 10000),
             0,  2 * Math.PI,
             false,
-            (satellite['inclination'])
+            (satellite['inclination'] / (Math.PI * 180))
         );
-        var points = orbit_curve.getPoints( 50 );
+        var points = orbit_curve.getPoints( 1000 );
         var geometry = new THREE.BufferGeometry().setFromPoints( points );
         var material = new THREE.LineBasicMaterial( { color : 0xbfff00 } );
         var orbit = new THREE.Line( geometry, material );
