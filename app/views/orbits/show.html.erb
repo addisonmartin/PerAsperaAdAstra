@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Epoch:</strong>
+  <%= @orbit.epoch %>
+</p>
+
+<p>
+  <strong>First derivative of mean motion:</strong>
+  <%= @orbit.first_derivative_of_mean_motion %>
+</p>
+
+<p>
+  <strong>Second derivative of mean motion:</strong>
+  <%= @orbit.second_derivative_of_mean_motion %>
+</p>
+
+<p>
+  <strong>B star:</strong>
+  <%= @orbit.b_star %>
+</p>
+
+<p>
+  <strong>Inclination:</strong>
+  <%= @orbit.inclination %>
+</p>
+
+<p>
+  <strong>Right ascension of ascending node:</strong>
+  <%= @orbit.right_ascension_of_ascending_node %>
+</p>
+
+<p>
+  <strong>Eccentricity:</strong>
+  <%= @orbit.eccentricity %>
+</p>
+
+<p>
+  <strong>Argument of perigee:</strong>
+  <%= @orbit.argument_of_perigee %>
+</p>
+
+<p>
+  <strong>Mean anomaly:</strong>
+  <%= @orbit.mean_anomaly %>
+</p>
+
+<p>
+  <strong>Mean motion:</strong>
+  <%= @orbit.mean_motion %>
+</p>
+
+<p>
+  <strong>Revolution number:</strong>
+  <%= @orbit.revolution_number %>
+</p>
+
+<p>
+  <strong>Tles:</strong>
+  <%= @orbit.tles %>
+</p>
+
+<%= link_to 'Edit', edit_orbit_path(@orbit) %> |
+<%= link_to 'Back', orbits_path %>

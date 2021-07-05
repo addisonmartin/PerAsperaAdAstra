@@ -1,0 +1,77 @@
+<%= form_with(model: orbit) do |form| %>
+  <% if orbit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(orbit.errors.count, "error") %> prohibited this orbit from being saved:</h2>
+
+      <ul>
+        <% orbit.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :epoch %>
+    <%= form.text_area :epoch %>
+  </div>
+
+  <div class="field">
+    <%= form.label :first_derivative_of_mean_motion %>
+    <%= form.text_field :first_derivative_of_mean_motion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :second_derivative_of_mean_motion %>
+    <%= form.text_field :second_derivative_of_mean_motion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :b_star %>
+    <%= form.text_field :b_star %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inclination %>
+    <%= form.text_field :inclination %>
+  </div>
+
+  <div class="field">
+    <%= form.label :right_ascension_of_ascending_node %>
+    <%= form.text_field :right_ascension_of_ascending_node %>
+  </div>
+
+  <div class="field">
+    <%= form.label :eccentricity %>
+    <%= form.text_field :eccentricity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :argument_of_perigee %>
+    <%= form.text_field :argument_of_perigee %>
+  </div>
+
+  <div class="field">
+    <%= form.label :mean_anomaly %>
+    <%= form.text_field :mean_anomaly %>
+  </div>
+
+  <div class="field">
+    <%= form.label :mean_motion %>
+    <%= form.text_field :mean_motion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :revolution_number %>
+    <%= form.number_field :revolution_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tles %>
+    <%= form.text_area :tles %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
