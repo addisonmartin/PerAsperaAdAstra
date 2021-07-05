@@ -172,6 +172,9 @@ login_request.body = "identity=#{username}&password=#{password}"
 login_response = https.request(login_request)
 login_cookie = login_response.response['set-cookie']
 
+raise 'Unable to login to space-track.org!' if login_response.code != '200'
+puts 'Logged in to space-track.org...'
+
 # Prepare to query the satellite catalog
 satcat_query_request = Net::HTTP::Get.new(satcat_query_url)
 satcat_query_request['Cookie'] = login_cookie
@@ -180,13 +183,16 @@ satcat_query_request['Cookie'] = login_cookie
 satcat_response = https.request(satcat_query_request)
 satcat_satellites = JSON.parse(satcat_response.body)
 
+raise 'Unable to query space-track.org satellite catalog!' if satcat_response.code != '200'
+puts 'Queried space-track.org satellite catalog...'
+
 satcat_satellites.each do |satcat|
   satellite_keys = {}
   satellite_keys['catalog_id'] = satcat['NORAD_CAT_ID']
   satellite_keys['international_designation'] = satcat['INTLDES']
   satellite_keys['name'] = satcat['SATNAME']
   #satellite_keys['object_name'] = satcat['OBJECT_NAME']
-  satellite_keys['space_object_type'] = satcat['OBJECT_TYPE'].titleize
+  satellite_keys['space_object_type'] = satcat['OBJECT_TYPE']&.titleize
   #satellite_keys['object_id'] = satcat['OBJECT_ID']
   #satellite_keys['object_number'] = satcat['OBJECT_NUMBER']
   satellite_keys['country'] = country_conversions[satcat['COUNTRY']]
@@ -197,7 +203,7 @@ satcat_satellites.each do |satcat|
   #satellite_keys['launch_number'] = satcat['LAUNCH_NUM']
   #satellite_keys['launch_piece'] = satcat['LAUNCH_PIECE']
   #satellite_keys['radar_cross_section_value'] = satcat['RCSVALUE']
-  satellite_keys['radar_cross_section_size'] = satcat['RCS_SIZE'].titleize
+  satellite_keys['radar_cross_section_size'] = satcat['RCS_SIZE']&.titleize
   #satellite_keys['comment'] = satcat['COMMENT']
   #satellite_keys['comment_code'] = satcat['COMMENTCODE']
   #satellite_keys['file'] = satcat['FILE']
@@ -215,6 +221,8 @@ satcat_satellites.each do |satcat|
   orbit = Orbit.new(orbit_keys)
   orbit.satellite = satellite
   orbit.save!
+
+  puts "Saved satellite #{satellite.name} and its orbit..."
 end
 
 # Prepare the logout request
@@ -223,3 +231,5 @@ logout_request['Cookie'] = login_cookie
 
 # Make the logout request
 https.request(logout_request)
+puts 'Logged out of space-track.org...'
+puts "Complete! Saved #{Satellite.all.count} new satellites."
