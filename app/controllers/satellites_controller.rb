@@ -3,7 +3,7 @@ class SatellitesController < ApplicationController
 
   # GET /satellites or /satellites.json
   def index
-    @satellites = Satellite.all
+    @satellites = Satellite.includes(:orbit).all
   end
 
   # GET /satellites/1 or /satellites/1.json
@@ -57,13 +57,14 @@ class SatellitesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_satellite
-      @satellite = Satellite.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def satellite_params
-      params.require(:satellite).permit(:name, :catalog_number, :international_designation, :launch_date, :decay_date, :element_number, :tles, :orbit)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_satellite
+    @satellite = Satellite.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def satellite_params
+    params.require(:satellite).permit(:name, :catalog_id, :international_designation, :launch_date, :decay_date, :country, :launch_site, :space_object_type, :radar_cross_section_size, :element_number, :tles)
+  end
 end

@@ -3,7 +3,7 @@ class OrbitsController < ApplicationController
 
   # GET /orbits or /orbits.json
   def index
-    @orbits = Orbit.all
+    @orbits = Orbit.includes(:satellite).all
   end
 
   # GET /orbits/1 or /orbits/1.json
@@ -57,13 +57,14 @@ class OrbitsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_orbit
-      @orbit = Orbit.find(params[:id])
-    end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_orbit
+    @orbit = Orbit.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def orbit_params
-      params.require(:orbit).permit(:epoch, :first_derivative_of_mean_motion, :second_derivative_of_mean_motion, :b_star, :inclination, :right_ascension_of_ascending_node, :eccentricity, :argument_of_perigee, :mean_anomaly, :mean_motion, :revolution_number, :tles)
-    end
+  # Only allow a list of trusted parameters through.
+  def orbit_params
+    params.require(:orbit).permit(:name, :epoch, :first_derivative_of_mean_motion, :second_derivative_of_mean_motion, :b_star, :inclination, :apogee, :perigee, :period, :right_ascension_of_ascending_node, :eccentricity, :argument_of_perigee, :mean_anomaly, :mean_motion, :revolution_number, :tles, :satellite_id)
+  end
 end
