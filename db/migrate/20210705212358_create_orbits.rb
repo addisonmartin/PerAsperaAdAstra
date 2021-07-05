@@ -14,6 +14,8 @@ class CreateOrbits < ActiveRecord::Migration[6.1]
       t.integer :revolution_number
       t.text :tles
 
+      t.belongs_to :satellite
+
       t.timestamps
     end
   end

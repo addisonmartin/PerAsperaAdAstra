@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_05_212358) do
+ActiveRecord::Schema.define(version: 2021_07_05_213508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,20 @@ ActiveRecord::Schema.define(version: 2021_07_05_212358) do
     t.decimal "mean_anomaly"
     t.decimal "mean_motion"
     t.integer "revolution_number"
+    t.text "tles"
+    t.bigint "satellite_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["satellite_id"], name: "index_orbits_on_satellite_id"
+  end
+
+  create_table "satellites", force: :cascade do |t|
+    t.text "name"
+    t.integer "catalog_number"
+    t.text "international_designation"
+    t.datetime "launch_date"
+    t.datetime "decay_date"
+    t.integer "element_number"
     t.text "tles"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
