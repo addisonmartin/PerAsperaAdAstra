@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2021_07_05_213508) do
   enable_extension "plpgsql"
 
   create_table "orbits", force: :cascade do |t|
+    t.text "name"
     t.text "epoch"
     t.decimal "first_derivative_of_mean_motion"
     t.decimal "second_derivative_of_mean_motion"
@@ -39,11 +40,11 @@ ActiveRecord::Schema.define(version: 2021_07_05_213508) do
 
   create_table "satellites", force: :cascade do |t|
     t.text "name"
-    t.integer "catalog_number"
+    t.integer "catalog_id"
     t.text "international_designation"
     t.datetime "launch_date"
     t.datetime "decay_date"
-    t.text "launch_country"
+    t.text "country"
     t.text "launch_site"
     t.text "space_object_type"
     t.text "radar_cross_section_size"

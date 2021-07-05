@@ -6,12 +6,16 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Catalog number</th>
+      <th>Catalog ID</th>
       <th>International designation</th>
       <th>Launch date</th>
       <th>Decay date</th>
+      <th>Country</th>
+      <th>Launch Site</th>
+      <th>Space Object Type</th>
+      <th>Radar Cross Section Size</th>
       <th>Element number</th>
-      <th>Tles</th>
+      <th>Two-Line Element Set</th>
       <th>Orbit</th>
       <th colspan="3"></th>
     </tr>
@@ -21,13 +25,17 @@
     <% @satellites.each do |satellite| %>
       <tr>
         <td><%= satellite.name %></td>
-        <td><%= satellite.catalog_number %></td>
+        <td><%= satellite.catalog_id %></td>
         <td><%= satellite.international_designation %></td>
         <td><%= satellite.launch_date %></td>
         <td><%= satellite.decay_date %></td>
+        <td><%= satellite.country %></td>
+        <td><%= satellite.launch_site %></td>
+        <td><%= satellite.space_object_type %></td>
+        <td><%= satellite.radar_cross_section_size %></td>
         <td><%= satellite.element_number %></td>
         <td><%= satellite.tles %></td>
-        <td><%= satellite.orbit %></td>
+        <td><%= link_to satellite.orbit.name, satellite.orbit %></td>
         <td><%= link_to 'Show', satellite %></td>
         <td><%= link_to 'Edit', edit_satellite_path(satellite) %></td>
         <td><%= link_to 'Destroy', satellite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
