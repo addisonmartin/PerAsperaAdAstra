@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @satellite.name %>
+</p>
+
+<p>
+  <strong>Catalog number:</strong>
+  <%= @satellite.catalog_number %>
+</p>
+
+<p>
+  <strong>International designation:</strong>
+  <%= @satellite.international_designation %>
+</p>
+
+<p>
+  <strong>Launch date:</strong>
+  <%= @satellite.launch_date %>
+</p>
+
+<p>
+  <strong>Decay date:</strong>
+  <%= @satellite.decay_date %>
+</p>
+
+<p>
+  <strong>Element number:</strong>
+  <%= @satellite.element_number %>
+</p>
+
+<p>
+  <strong>Tles:</strong>
+  <%= @satellite.tles %>
+</p>
+
+<p>
+  <strong>Orbit:</strong>
+  <%= @satellite.orbit %>
+</p>
+
+<%= link_to 'Edit', edit_satellite_path(@satellite) %> |
+<%= link_to 'Back', satellites_path %>
