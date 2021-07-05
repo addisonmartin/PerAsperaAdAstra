@@ -6,6 +6,9 @@ class CreateOrbits < ActiveRecord::Migration[6.1]
       t.decimal :second_derivative_of_mean_motion
       t.decimal :b_star
       t.decimal :inclination
+      t.decimal :apogee
+      t.decimal :perigee
+      t.decimal :period
       t.decimal :right_ascension_of_ascending_node
       t.decimal :eccentricity
       t.decimal :argument_of_perigee
