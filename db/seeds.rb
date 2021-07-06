@@ -16,6 +16,7 @@ logout_url = 'ajaxauth/logout'
 username = Rails.application.credentials.space_track_org[:username]
 password = Rails.application.credentials.space_track_org[:password]
 satcat_query_url = '/basicspacedata/query/class/satcat/orderby/norad_cat_id%20asc'
+tles_query_url = '/basicspacedata/query/class/gp/NORAD_CAT_ID/*/orderby/TLE_LINE1%20ASC/format/tle'
 country_conversions = {
   'AB': 'Arab Satellite Communications Organization',
   'AC': 'Asiasat Corp',
@@ -172,7 +173,9 @@ login_request.body = "identity=#{username}&password=#{password}"
 login_response = https.request(login_request)
 login_cookie = login_response.response['set-cookie']
 
-raise 'Unable to login to space-track.org!' if login_response.code != '200'
+raise "Unable to login to space-track.org due to bad credentials!" if login_response.code == '401'
+raise 'Unable to login to space-track.org likely due to rate throttling!' if login_response.code == '500'
+raise "Unable to login to space-track.org! HTTP Code: #{login_response.code}" if login_response.code != '200'
 puts 'Logged in to space-track.org...'
 
 # Prepare to query the satellite catalog
@@ -181,12 +184,19 @@ satcat_query_request['Cookie'] = login_cookie
 
 # Make the query request
 satcat_response = https.request(satcat_query_request)
-satcat_satellites = JSON.parse(satcat_response.body)
 
-raise 'Unable to query space-track.org satellite catalog!' if satcat_response.code != '200'
+raise 'Unable to query space-track.org satellite catalog likely due to rate throttling!' if satcat_response.code == '500'
+raise "Unable to query space-track.org satellite catalog! HTTP Code: #{satcat_response.code}" if satcat_response.code != '200'
 puts 'Queried space-track.org satellite catalog...'
 
+satcat_satellites = JSON.parse(satcat_response.body)
+
+# Used to prevent rate throttling the API
+start_time = Time.now
+number_of_queries = 0
+
 satcat_satellites.each do |satcat|
+  # Convert the keys to a format this application can use.
   satellite_keys = {}
   satellite_keys['catalog_id'] = satcat['NORAD_CAT_ID']
   satellite_keys['international_designation'] = satcat['INTLDES']
@@ -209,8 +219,30 @@ satcat_satellites.each do |satcat|
   #satellite_keys['file'] = satcat['FILE']
   #satellite_keys['current'] = satcat['CURRENT']
 
-  satellite = Satellite.create!(satellite_keys)
+  # Prepare the query request for the satellite's two-line element set (TLES)
+  tles_query_request_url = tles_query_url.sub('*', satellite_keys['catalog_id'])
+  tles_query_request = Net::HTTP::Get.new(tles_query_request_url)
+  tles_query_request['Cookie'] = login_cookie
 
+  # Make the tles query request
+  tles_response = https.request(tles_query_request)
+
+  raise 'Unable to query space-track.org TLES likely due to rate throttling!' if tles_response.code == '500'
+  raise "Unable to query space-track.org TLES! HTTP Code: #{tles_response.code}" unless tles_response.code == '200' or tles_response.code == '204'
+
+  if tles_response.code == '200'
+    puts "Queried space-track.org for the TLES of #{satellite_keys['name']}..."
+    tles = tles_response.body
+  else
+    puts "Queried space-track.org and got no TLES for #{satellite_keys['name']}..."
+    tles = nil
+  end
+
+  satellite = Satellite.new(satellite_keys)
+  satellite.tles = tles
+  satellite.save!
+
+  # Convert the keys to a format this application can use.
   orbit_keys = {}
   orbit_keys['name'] = "#{satellite.name}'s Orbit"
   orbit_keys['period'] = satcat['PERIOD']
@@ -220,9 +252,21 @@ satcat_satellites.each do |satcat|
 
   orbit = Orbit.new(orbit_keys)
   orbit.satellite = satellite
+  orbit.tles = tles
   orbit.save!
 
-  puts "Saved satellite #{satellite.name} and its orbit..."
+  puts "Saved satellite #{satellite.name} and its orbit in the database..."
+  number_of_queries += 1
+
+  now_time = Time.now
+  delta_time = now_time - start_time
+  if delta_time <= 1.minute and number_of_queries >= 19
+    sleep_time = 1.minute - delta_time + 3.seconds
+    puts "Sleeping for #{sleep_time} seconds to prevent rate throttling..."
+    sleep(sleep_time)
+    start_time = Time.now
+    number_of_queries = 0
+  end
 end
 
 # Prepare the logout request
