@@ -192,8 +192,8 @@ puts 'Queried space-track.org satellite catalog...'
 satcat_satellites = JSON.parse(satcat_response.body)
 
 # Used to prevent rate throttling the API
-start_time = Time.now
-number_of_queries = 0
+#start_time = Time.now
+#number_of_queries = 0
 
 satcat_satellites.each do |satcat|
   # Convert the keys to a format this application can use.
@@ -220,28 +220,28 @@ satcat_satellites.each do |satcat|
   #satellite_keys['current'] = satcat['CURRENT']
 
   # Prepare the query request for the satellite's two-line element set (TLES)
-  tles_query_request_url = tles_query_url.sub('*', satellite_keys['catalog_id'])
-  tles_query_request = Net::HTTP::Get.new(tles_query_request_url)
-  tles_query_request['Cookie'] = login_cookie
+  #tles_query_request_url = tles_query_url.sub('*', satellite_keys['catalog_id'])
+  #tles_query_request = Net::HTTP::Get.new(tles_query_request_url)
+  #tles_query_request['Cookie'] = login_cookie
 
   # Make the tles query request
-  tles_response = https.request(tles_query_request)
+  #tles_response = https.request(tles_query_request)
 
-  raise 'Unable to query space-track.org TLES likely due to rate throttling!' if tles_response.code == '500'
-  raise "Unable to query space-track.org TLES! HTTP Code: #{tles_response.code}" unless tles_response.code == '200' or tles_response.code == '204'
+  #raise 'Unable to query space-track.org TLES likely due to rate throttling!' if tles_response.code == '500'
+  #raise "Unable to query space-track.org TLES! HTTP Code: #{tles_response.code}" unless tles_response.code == '200' or tles_response.code == '204'
 
-  if tles_response.code == '200'
-    puts "Queried space-track.org for the TLES of #{satellite_keys['name']}..."
-    tles = tles_response.body
-  else
-    puts "Queried space-track.org and got no TLES for #{satellite_keys['name']}..."
-    tles = nil
-  end
+  #if tles_response.code == '200'
+  #  puts "Queried space-track.org for the TLES of #{satellite_keys['name']}..."
+  #  tles = tles_response.body
+  #else
+  #  puts "Queried space-track.org and got no TLES for #{satellite_keys['name']}..."
+  #  tles = nil
+  #end
 
   # raise "Verify checksum failed for satellite with NORAD Catalog ID #{satellite_keys['catalog_id']}" unless verify_checksum(tles)
 
   satellite = Satellite.new(satellite_keys)
-  satellite.tles = tles
+  #satellite.tles = tles
   satellite.save!
 
   # Convert the keys to a format this application can use.
@@ -254,21 +254,21 @@ satcat_satellites.each do |satcat|
 
   orbit = Orbit.new(orbit_keys)
   orbit.satellite = satellite
-  orbit.tles = tles
+  #orbit.tles = tles
   orbit.save!
 
   puts "Saved satellite #{satellite.name} and its orbit in the database..."
-  number_of_queries += 1
+  #number_of_queries += 1
 
-  now_time = Time.now
-  delta_time = now_time - start_time
-  if delta_time <= 1.minute and number_of_queries >= 19
-    sleep_time = 1.minute - delta_time + 3.seconds
-    puts "Sleeping for #{sleep_time} seconds to prevent rate throttling..."
-    sleep(sleep_time)
-    start_time = Time.now
-    number_of_queries = 0
-  end
+  #now_time = Time.now
+  #delta_time = now_time - start_time
+  #if delta_time <= 1.minute and number_of_queries >= 19
+  #  sleep_time = 1.minute - delta_time + 3.seconds
+  #  puts "Sleeping for #{sleep_time} seconds to prevent rate throttling..."
+  #  sleep(sleep_time)
+  #  start_time = Time.now
+  #  number_of_queries = 0
+  #end
 end
 
 # Prepare the logout request
