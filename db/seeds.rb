@@ -238,6 +238,8 @@ satcat_satellites.each do |satcat|
     tles = nil
   end
 
+  # raise "Verify checksum failed for satellite with NORAD Catalog ID #{satellite_keys['catalog_id']}" unless verify_checksum(tles)
+
   satellite = Satellite.new(satellite_keys)
   satellite.tles = tles
   satellite.save!
