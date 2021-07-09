@@ -13,3 +13,6 @@ ActiveStorage.start()
 import "controllers"
 
 import "stylesheets/application"
+
+const assets = require.context("../assets", true)
+const assetPath = name => assets(name, true)
