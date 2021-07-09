@@ -3,7 +3,7 @@ class SatellitesController < ApplicationController
 
   # GET /satellites or /satellites.json
   def index
-    @satellites = Satellite.includes(:orbit).all
+    @satellites = search
   end
 
   # GET /satellites/1 or /satellites/1.json
@@ -57,6 +57,56 @@ class SatellitesController < ApplicationController
   end
 
   private
+
+  # Constructs a query based on the parameters the user selected in the search form, then executes that query.
+  def search
+    search_query = ''
+    search_options = []
+
+    unless params[:name].blank?
+      search_query += 'name ILIKE ?'
+      search_options << "%#{params[:name]}%"
+    end
+    unless params[:catalog_id].blank?
+      search_query += 'AND catalog_id = ?'
+      search_options << params[:catalog_id]
+    end
+    unless params[:international_designation].blank?
+      search_query += 'AND international_designation ILIKE ?'
+      search_options << "%#{params[:international_designation]}%"
+    end
+    unless params[:launch_date].blank?
+      search_query += 'AND launch_date = ?'
+      search_options << params[:launch_date]
+    end
+    unless params[:decay_date].blank?
+      search_query += 'AND decay_date = ?'
+      search_options << params[:decay_date]
+    end
+    unless params[:country].blank?
+      search_query += 'AND country = ?'
+      search_options << params[:country]
+    end
+    unless params[:launch_site].blank?
+      search_query += 'AND launch_site = ?'
+      search_options << params[:launch_site]
+    end
+    unless params[:space_object_type].blank?
+      search_query += 'AND space_object_type = ?'
+      search_options << params[:space_object_type]
+    end
+    unless params[:radar_cross_section_size].blank?
+      search_query += 'AND radar_cross_section_size = ?'
+      search_options << params[:radar_cross_section_size]
+    end
+
+    if search_query.empty?
+      Satellite.includes(:orbit).all
+    else
+      search_query = search_query.delete_prefix('AND ')
+      Satellite.includes(:orbit).where(search_query, *search_options)
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_satellite

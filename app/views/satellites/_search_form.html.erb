@@ -1,0 +1,32 @@
+<h2 class="text-xl text-white">Search and Filter</h2>
+<%= form_tag satellites_path, method: :get do %>
+  <%= label_tag :name, 'Name', {class: 'text-white'} %>
+  <%= text_field_tag :name, params[:name], {type: 'text'} %>
+
+  <%= label_tag :catalog_id, 'Catalog ID', {class: 'text-white'} %>
+  <%= text_field_tag :catalog_id, params[:catalog_id], {type: 'number'} %>
+
+  <%= label_tag :international_designation, 'International Designation', {class: 'text-white'} %>
+  <%= text_field_tag :international_designation, params[:international_designation], {type: 'text'} %>
+
+  <%= label_tag :launch_date, 'Launch Date', {class: 'text-white'} %>
+  <%= text_field_tag :launch_date, params[:launch_date], {type: 'text'} %>
+
+  <%= label_tag :decay_date, 'Decay Date', {class: 'text-white'} %>
+  <%= text_field_tag :decay_date, params[:decay_date], {type: 'text'} %>
+
+  <%= label_tag :country, 'Country', {class: 'text-white'} %>
+  <%= select_tag :country, options_for_select(Satellite.list_of_countries.map {|c| [c, c.parameterize]}), include_blank: true %>
+
+  <%= label_tag :launch_site, 'Launch Site', {class: 'text-white'} %>
+  <%= select_tag :launch_site, options_for_select(Satellite.list_of_launch_sites.map {|ls| [ls, ls.parameterize]}), include_blank: true %>
+
+  <%= label_tag :space_object_type, 'Space Object Type', {class: 'text-white'} %>
+  <%= select_tag :space_object_type, options_for_select(Satellite.list_of_space_object_types.map {|sot| [sot, sot.parameterize]}), include_blank: true %>
+
+  <%= label_tag :radar_cross_section_size, 'Radar Cross Section Size', {class: 'text-white'} %>
+  <%= select_tag :radar_cross_section_size, options_for_select(Satellite.list_of_radar_cross_section_sizes.map { |rcss| [rcss, rcss.parameterize]}), include_blank: true %>
+
+  <%= submit_tag 'Search' %>
+  <%= link_to 'Clear', satellites_path, class: 'text-white' %>
+<% end %>
