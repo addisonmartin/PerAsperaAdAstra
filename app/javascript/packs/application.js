@@ -17,4 +17,4 @@ import "stylesheets/application"
 const assets = require.context("../assets", true)
 const assetPath = name => assets(name, true)
 
-import "source/orbit_view"
+import "source/satellite_view"
