@@ -1,32 +1,45 @@
 <h2 class="text-xl text-white">Search and Filter</h2>
-<%= form_tag satellites_path, method: :get do %>
-  <%= label_tag :name, 'Name', {class: 'text-white'} %>
-  <%= text_field_tag :name, params[:name], {type: 'text'} %>
-
-  <%= label_tag :catalog_id, 'Catalog ID', {class: 'text-white'} %>
-  <%= text_field_tag :catalog_id, params[:catalog_id], {type: 'number'} %>
-
-  <%= label_tag :international_designation, 'International Designation', {class: 'text-white'} %>
-  <%= text_field_tag :international_designation, params[:international_designation], {type: 'text'} %>
-
-  <%= label_tag :launch_date, 'Launch Date', {class: 'text-white'} %>
-  <%= text_field_tag :launch_date, params[:launch_date], {type: 'text'} %>
-
-  <%= label_tag :decay_date, 'Decay Date', {class: 'text-white'} %>
-  <%= text_field_tag :decay_date, params[:decay_date], {type: 'text'} %>
-
-  <%= label_tag :country, 'Country', {class: 'text-white'} %>
-  <%= select_tag :country, options_for_select(Satellite.list_of_countries.map {|c| [c, c.parameterize]}), include_blank: true %>
-
-  <%= label_tag :launch_site, 'Launch Site', {class: 'text-white'} %>
-  <%= select_tag :launch_site, options_for_select(Satellite.list_of_launch_sites.map {|ls| [ls, ls.parameterize]}), include_blank: true %>
-
-  <%= label_tag :space_object_type, 'Space Object Type', {class: 'text-white'} %>
-  <%= select_tag :space_object_type, options_for_select(Satellite.list_of_space_object_types.map {|sot| [sot, sot.parameterize]}), include_blank: true %>
-
-  <%= label_tag :radar_cross_section_size, 'Radar Cross Section Size', {class: 'text-white'} %>
-  <%= select_tag :radar_cross_section_size, options_for_select(Satellite.list_of_radar_cross_section_sizes.map { |rcss| [rcss, rcss.parameterize]}), include_blank: true %>
-
-  <%= submit_tag 'Search' %>
-  <%= link_to 'Clear', satellites_path, class: 'text-white' %>
-<% end %>
+<div class="paaa-form">
+  <%= form_tag satellites_path, method: :get do %>
+    <div class="paaa-form-row">
+        <%= label_tag :name, 'Name', {class: 'paaa-form-label'} %>
+        <%= text_field_tag :name, params[:name], {type: 'text', class: 'paaa-form-input'} %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :catalog_id, 'Catalog ID', {class: 'paaa-form-label'} %>
+      <%= text_field_tag :catalog_id, params[:catalog_id], {type: 'number', class: 'paaa-form-input'} %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :international_designation, 'International Designation', {class: 'paaa-form-label'} %>
+      <%= text_field_tag :international_designation, params[:international_designation], {type: 'text', class: 'paaa-form-input'} %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :launch_date, 'Launch Date', {class: 'paaa-form-label'} %>
+      <%= text_field_tag :launch_date, params[:launch_date], {type: 'date', class: 'paaa-form-input'} %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :decay_date, 'Decay Date', {class: 'paaa-form-label'} %>
+      <%= text_field_tag :decay_date, params[:decay_date], {type: 'date', class: 'paaa-form-input'} %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :country, 'Country', {class: 'paaa-form-label'} %>
+      <%= select_tag :country, options_for_select(Satellite::LIST_OF_COUNTRIES.map {|c| [c, c]}), include_blank: true, class: 'paaa-form-input' %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :launch_site, 'Launch Site', {class: 'paaa-form-label'} %>
+      <%= select_tag :launch_site, options_for_select(Satellite::LIST_OF_LAUNCH_SITES.map {|ls| [ls, ls]}), include_blank: true, class: 'paaa-form-input' %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :space_object_type, 'Space Object Type', {class: 'paaa-form-label'} %>
+      <%= select_tag :space_object_type, options_for_select(Satellite::LIST_OF_SPACE_OBJECT_TYPES.map {|sot| [sot, sot]}), include_blank: true, class: 'paaa-form-input' %>
+    </div>
+    <div class="paaa-form-row">
+      <%= label_tag :radar_cross_section_size, 'Radar Cross Section Size', {class: 'paaa-form-label'} %>
+      <%= select_tag :radar_cross_section_size, options_for_select(Satellite::LIST_OF_RADAR_CROSS_SECTION_SIZES.map { |rcss| [rcss, rcss]}), include_blank: true, class: 'paaa-form-input' %>
+    </div>
+    <div class="paaa-form-row">
+      <%= submit_tag 'Search' %>
+      <%= link_to 'Clear', satellites_path, class: 'text-white' %>
+    </div>
+  <% end %>
+</div>

@@ -1,11 +1,13 @@
 @layer components {
   .paaa-table {
+    @apply table-auto border-collapse;
   }
   .paaa-table-head {
+    @apply text-xl;
   }
   .paaa-table-body {
   }
   .paaa-table-cell {
-    @apply text-white;
+    @apply border border-white text-white px-2 py-1;
   }
 }

@@ -1,0 +1,13 @@
+@layer components {
+  .paaa-form {
+    @apply grid grid-cols-2;
+  }
+  .paaa-form-label {
+    @apply text-white;
+  }
+  .paaa-form-input {
+  }
+  .paaa-form-row {
+    @apply grid-rows-2;
+  }
+}
