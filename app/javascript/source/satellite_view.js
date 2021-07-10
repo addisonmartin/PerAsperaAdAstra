@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import earthAsset from '../assets/Earth.glb';
 
 window.addEventListener("load", () => {
     var satellite_view_element = document.getElementById(('satellite-view'))
@@ -19,14 +21,21 @@ window.addEventListener("load", () => {
         var controls = new OrbitControls(camera, satellite_view_element);
         controls.target.set(0, 0, 0);
 
-        const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
-        const points = [];
-        points.push( new THREE.Vector3(- 10, 0, 0 ));
-        points.push( new THREE.Vector3(0, 10, 0 ));
-        points.push( new THREE.Vector3(10, 0, 0 ));
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const line = new THREE.Line(geometry, material);
-        scene.add(line);
+        var loader = new GLTFLoader();
+        loader.load(earthAsset, function (gltf) {
+            var gltfScene = gltf.scene;
+            //gltfScene.scale.set(1/783.928217261, 1/783.928217261, 1/783.928217261);
+            scene.add(gltfScene);
+
+        }, function (xhr) {
+            console.log('Earth.glb ' + ( xhr.loaded / xhr.total * 100 ) + '% loaded');
+        }, undefined, function (error) {
+            console.error(error);
+        });
+
+        var light = new THREE.AmbientLight( 0xffffff );
+        light.intensity = 5;
+        scene.add(light);
 
         function animate() {
             requestAnimationFrame(animate);
