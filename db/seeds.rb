@@ -17,37 +17,49 @@ username = Rails.application.credentials.space_track_org[:username]
 password = Rails.application.credentials.space_track_org[:password]
 satcat_query_url = '/basicspacedata/query/class/satcat/orderby/norad_cat_id%20asc'
 tles_query_url = '/basicspacedata/query/class/gp/NORAD_CAT_ID/*/orderby/TLE_LINE1%20ASC/format/tle'
+cache_path = Rails.root.join('db', 'satcat_cache.json')
+use_cache = true
 
-# Establish the base connection before logging in
-uri = URI.parse(base_url + login_url)
-https = Net::HTTP.new(uri.host, uri.port)
-https.use_ssl = true
+if use_cache
+  satcat_satellites = {}
+  File.open(cache_path, 'r') do |file|
+    satcat_satellites = JSON.parse(file.read)
+  end
+else
+  # Establish the base connection before logging in
+  uri = URI.parse(base_url + login_url)
+  https = Net::HTTP.new(uri.host, uri.port)
+  https.use_ssl = true
 
-# Prepare the login request
-login_request = Net::HTTP::Post.new(uri.request_uri)
-login_request.body = "identity=#{username}&password=#{password}"
+  # Prepare the login request
+  login_request = Net::HTTP::Post.new(uri.request_uri)
+  login_request.body = "identity=#{username}&password=#{password}"
 
-# Make the login request and store the cookie for later use
-login_response = https.request(login_request)
-login_cookie = login_response.response['set-cookie']
+  # Make the login request and store the cookie for later use
+  login_response = https.request(login_request)
+  login_cookie = login_response.response['set-cookie']
 
-raise "Unable to login to space-track.org due to bad credentials!" if login_response.code == '401'
-raise 'Unable to login to space-track.org likely due to rate throttling!' if login_response.code == '500'
-raise "Unable to login to space-track.org! HTTP Code: #{login_response.code}" if login_response.code != '200'
-puts 'Logged in to space-track.org...'
+  raise "Unable to login to space-track.org due to bad credentials!" if login_response.code == '401'
+  raise 'Unable to login to space-track.org likely due to rate throttling!' if login_response.code == '500'
+  raise "Unable to login to space-track.org! HTTP Code: #{login_response.code}" if login_response.code != '200'
+  puts 'Logged in to space-track.org...'
 
-# Prepare to query the satellite catalog
-satcat_query_request = Net::HTTP::Get.new(satcat_query_url)
-satcat_query_request['Cookie'] = login_cookie
+  # Prepare to query the satellite catalog
+  satcat_query_request = Net::HTTP::Get.new(satcat_query_url)
+  satcat_query_request['Cookie'] = login_cookie
 
-# Make the query request
-satcat_response = https.request(satcat_query_request)
+  # Make the query request
+  satcat_response = https.request(satcat_query_request)
 
-raise 'Unable to query space-track.org satellite catalog likely due to rate throttling!' if satcat_response.code == '500'
-raise "Unable to query space-track.org satellite catalog! HTTP Code: #{satcat_response.code}" if satcat_response.code != '200'
-puts 'Queried space-track.org satellite catalog...'
+  raise 'Unable to query space-track.org satellite catalog likely due to rate throttling!' if satcat_response.code == '500'
+  raise "Unable to query space-track.org satellite catalog! HTTP Code: #{satcat_response.code}" if satcat_response.code != '200'
+  puts 'Queried space-track.org satellite catalog...'
 
-satcat_satellites = JSON.parse(satcat_response.body)
+  satcat_satellites = JSON.parse(satcat_response.body)
+  File.open(Rails.root.join('db', 'satcat_cache.json'), 'w') do |file|
+    file.write(JSON.generate(satcat_satellites))
+  end
+end
 
 # Used to prevent rate throttling the API
 #start_time = Time.now
@@ -63,9 +75,9 @@ satcat_satellites.each do |satcat|
   satellite_keys['space_object_type'] = satcat['OBJECT_TYPE']&.titleize
   #satellite_keys['object_id'] = satcat['OBJECT_ID']
   #satellite_keys['object_number'] = satcat['OBJECT_NUMBER']
-  satellite_keys['country'] = Satellite.country_conversions[satcat['COUNTRY']]
+  satellite_keys['country'] = Satellite::COUNTRY_CONVERSIONS[satcat['COUNTRY'].to_sym]
   satellite_keys['launch_date'] = satcat['LAUNCH']
-  satellite_keys['launch_site'] = Satellite.launch_site_conversions[satcat['SITE']]
+  satellite_keys['launch_site'] = Satellite::LAUNCH_SITE_CONVERSIONS[satcat['SITE'].to_sym]
   satellite_keys['decay_date'] = satcat['DECAY']
   #satellite_keys['launch_year'] = satcat['LAUNCH_YEAR']
   #satellite_keys['launch_number'] = satcat['LAUNCH_NUM']
@@ -100,7 +112,6 @@ satcat_satellites.each do |satcat|
 
   satellite = Satellite.new(satellite_keys)
   #satellite.tles = tles
-  satellite.save!
 
   # Convert the keys to a format this application can use.
   orbit_keys = {}
@@ -114,6 +125,7 @@ satcat_satellites.each do |satcat|
   orbit.satellite = satellite
   #orbit.tles = tles
   orbit.save!
+  satellite.save!
 
   puts "Saved satellite #{satellite.name} and its orbit in the database..."
   #number_of_queries += 1
@@ -129,11 +141,13 @@ satcat_satellites.each do |satcat|
   #end
 end
 
-# Prepare the logout request
-logout_request = Net::HTTP::Get.new(logout_url)
-logout_request['Cookie'] = login_cookie
+if not use_cache
+  # Prepare the logout request
+  logout_request = Net::HTTP::Get.new(logout_url)
+  logout_request['Cookie'] = login_cookie
 
-# Make the logout request
-https.request(logout_request)
-puts 'Logged out of space-track.org...'
-puts "Complete! Saved #{Satellite.all.count} new satellites."
+  # Make the logout request
+  https.request(logout_request)
+  puts 'Logged out of space-track.org...'
+  puts "Complete! Saved #{Satellite.all.count} new satellites."
+end
