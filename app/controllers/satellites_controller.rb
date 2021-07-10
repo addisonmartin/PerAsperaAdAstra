@@ -3,7 +3,7 @@ class SatellitesController < ApplicationController
 
   # GET /satellites or /satellites.json
   def index
-    @satellites = search
+    @satellites = search.page(params[:page])
   end
 
   # GET /satellites/1 or /satellites/1.json
