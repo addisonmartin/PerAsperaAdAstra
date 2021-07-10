@@ -1,20 +1,5 @@
 class Satellite < ApplicationRecord
-  has_one :orbit, inverse_of: :satellite
-
-  # validates :tles, length: { maximum: 162 }
-  # validates :tles, format: { with: /^[A-Z0-9\+\- ]*$/, message: 'can only contain capital letters, numbers, spaces, and pluses and minus signs' }
-
-  # scope :rocket_bodies, -> { where(space_object_type: 'ROCKET BODY') }
-  # scope :payloads, -> { where(space_object_type: 'PAYLOAD') }
-  # scope :debris, -> { where(space_object_type: 'DEBRIS')
-  # scope :unknown, -> { where(space_object_type: 'TBA') }
-
-  # scope :in_orbit, -> { where(decay_date: nil) }
-  # scope :decayed, -> { where.not(decay_date: nil) }
-
-  # scope :starlink, -> { where('name ILIKE ?', 'STARLINK%') }
-
-  def self.list_of_countries
+  LIST_OF_COUNTRIES =
     [
       'Arab Satellite Communications Organization',
       'Asiasat Corp',
@@ -119,10 +104,9 @@ class Satellite < ApplicationRecord
       'United States/Brazil',
       'Venezuela',
       'Vietnam'
-    ]
-  end
+    ].freeze
 
-  def self.country_conversions
+  COUNTRY_CONVERSIONS =
     {
       'AB': 'Arab Satellite Communications Organization',
       'AC': 'Asiasat Corp',
@@ -227,10 +211,9 @@ class Satellite < ApplicationRecord
       'USBZ': 'United States/Brazil',
       'VENZ': 'Venezuela',
       'VTNM': 'Vietnam'
-    }
-  end
+    }.freeze
 
-  def self.list_of_launch_sites
+  LIST_OF_LAUNCH_SITES =
     [
       'Air Force Eastern Test Range',
       'Air Force Western Test Range',
@@ -267,10 +250,9 @@ class Satellite < ApplicationRecord
       'Yavne, Israel',
       'Yellow Sea Launch Area, China',
       'Yunsong, North Korea'
-    ]
-  end
+    ].freeze
 
-  def self.launch_site_conversions
+  LAUNCH_SITE_CONVERSIONS =
     {
       'AFETR': 'Air Force Eastern Test Range',
       'AFWTR': 'Air Force Western Test Range',
@@ -307,24 +289,47 @@ class Satellite < ApplicationRecord
       'YAVNE': 'Yavne, Israel',
       'YSLA': 'Yellow Sea Launch Area, China',
       'YUN': 'Yunsong, North Korea'
-    }
-  end
+    }.freeze
 
-  def self.list_of_space_object_types
+  LIST_OF_SPACE_OBJECT_TYPES =
     [
       'Payload',
       'Rocket Body',
       'Debris',
-      'Unknown'
-    ]
-  end
+      'TBA'
+    ].freeze
 
-  def self.list_of_radar_cross_section_sizes
+  LIST_OF_RADAR_CROSS_SECTION_SIZES =
     [
       'Small',
       'Medium',
-      'Large',
-      'Unknown'
-    ]
-  end
+      'Large'
+    ].freeze
+
+  has_one :orbit, inverse_of: :satellite
+  validates_associated :orbit
+
+  validates :orbit, :name, :catalog_id, :international_designation, :launch_date, :space_object_type, presence: true
+
+  validates :catalog_id, numericality: { only_integer: true }
+  validates :catalog_id, :international_designation, uniqueness: true
+
+  validates :country, inclusion: { in: LIST_OF_COUNTRIES }, allow_blank: true
+  validates :launch_site, inclusion: { in: LIST_OF_LAUNCH_SITES }, allow_blank: true
+  validates :space_object_type, inclusion: { in: LIST_OF_SPACE_OBJECT_TYPES }
+  validates :radar_cross_section_size, inclusion: { in: LIST_OF_RADAR_CROSS_SECTION_SIZES }, allow_blank: true
+
+  # validates :tles, length: { maximum: 162 }
+  # validates :tles, format: { with: /^[A-Z0-9\+\- ]*$/, message: 'can only contain capital letters, numbers, spaces, and pluses and minus signs' }
+
+  scope :rocket_bodies, -> { where(space_object_type: 'Rocket Body') }
+  scope :payloads, -> { where(space_object_type: 'Payload') }
+  scope :debris, -> { where(space_object_type: 'Debris') }
+  scope :unknown, -> { where(space_object_type: 'TBA') }
+
+  scope :in_orbit, -> { where(decay_date: nil) }
+  scope :decayed, -> { where.not(decay_date: nil) }
+
+  scope :starlink, -> { where('name ILIKE ?', 'STARLINK%') }
+  scope :one_web, -> { where('name ILIKE ?', 'ONEWEB%') }
 end

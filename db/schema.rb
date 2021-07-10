@@ -39,14 +39,14 @@ ActiveRecord::Schema.define(version: 2021_07_05_213508) do
   end
 
   create_table "satellites", force: :cascade do |t|
-    t.text "name"
-    t.integer "catalog_id"
-    t.text "international_designation"
-    t.date "launch_date"
+    t.text "name", null: false
+    t.integer "catalog_id", null: false
+    t.text "international_designation", null: false
+    t.date "launch_date", null: false
     t.date "decay_date"
     t.text "country"
     t.text "launch_site"
-    t.text "space_object_type"
+    t.text "space_object_type", null: false
     t.text "radar_cross_section_size"
     t.integer "element_number"
     t.text "tles"
