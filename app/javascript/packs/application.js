@@ -14,4 +14,5 @@ import "controllers"
 
 import "stylesheets/application"
 
+import "source/constants"
 import "source/satellite_view"
