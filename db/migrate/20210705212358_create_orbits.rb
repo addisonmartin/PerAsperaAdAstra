@@ -1,7 +1,7 @@
 class CreateOrbits < ActiveRecord::Migration[6.1]
   def change
     create_table :orbits do |t|
-      t.text :name
+      t.text :name, null: false
       t.text :epoch
       t.decimal :first_derivative_of_mean_motion
       t.decimal :second_derivative_of_mean_motion

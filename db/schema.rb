@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2021_07_05_213508) do
   enable_extension "plpgsql"
 
   create_table "orbits", force: :cascade do |t|
-    t.text "name"
+    t.text "name", null: false
     t.text "epoch"
     t.decimal "first_derivative_of_mean_motion"
     t.decimal "second_derivative_of_mean_motion"
