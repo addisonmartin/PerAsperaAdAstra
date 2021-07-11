@@ -31,13 +31,13 @@ window.addEventListener("load", () => {
         var orbitLines = [];
         for (var i = 0; i < orbits.length; i++) {
             const curve = new THREE.EllipseCurve(
-                0, 0, EARTH_RADIUS + orbits[i].apogee, EARTH_RADIUS + orbits[i].perigee, 0, 2 * Math.PI, true, 0
+                0, 0, parseFloat(EARTH_RADIUS) + parseFloat(orbits[i].apogee), parseFloat(EARTH_RADIUS) + parseFloat(orbits[i].perigee), 0, 2 * Math.PI, true, 0
             );
             const points = curve.getPoints(ORBIT_LINE_DIVISIONS);
             const geometry = new THREE.BufferGeometry().setFromPoints(points);
             const material = new THREE.LineBasicMaterial({ color : 0xff0000 });
             const orbit = new THREE.Line(geometry, material);
-            orbit.rotateY(orbits[i].inclination * (Math.PI/180));
+            orbit.rotateY(parseFloat(orbits[i].inclination) * (Math.PI/180));
 
             orbitLines.push(orbit);
             scene.add(orbit);
