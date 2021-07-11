@@ -1,12 +1,12 @@
 class OrbitsController < ApplicationController
   before_action :set_orbit, only: %i[ show edit update destroy ]
 
-  # GET /orbits or /orbits.json
+  # GET /orbits
   def index
     @orbits = Orbit.includes(:satellite).all
   end
 
-  # GET /orbits/1 or /orbits/1.json
+  # GET /orbits/1
   def show
   end
 
@@ -19,40 +19,35 @@ class OrbitsController < ApplicationController
   def edit
   end
 
-  # POST /orbits or /orbits.json
+  # POST /orbits
   def create
     @orbit = Orbit.new(orbit_params)
 
     respond_to do |format|
       if @orbit.save
         format.html { redirect_to @orbit, notice: "Orbit was successfully created." }
-        format.json { render :show, status: :created, location: @orbit }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @orbit.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /orbits/1 or /orbits/1.json
+  # PATCH/PUT /orbits/1
   def update
     respond_to do |format|
       if @orbit.update(orbit_params)
         format.html { redirect_to @orbit, notice: "Orbit was successfully updated." }
-        format.json { render :show, status: :ok, location: @orbit }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @orbit.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /orbits/1 or /orbits/1.json
+  # DELETE /orbits/1
   def destroy
     @orbit.destroy
     respond_to do |format|
       format.html { redirect_to orbits_url, notice: "Orbit was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

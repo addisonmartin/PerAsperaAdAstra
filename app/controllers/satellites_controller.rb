@@ -1,12 +1,16 @@
 class SatellitesController < ApplicationController
   before_action :set_satellite, only: %i[ show edit update destroy ]
 
-  # GET /satellites or /satellites.json
+  # GET /satellites
   def index
+    # Search and paginate the satellite catalog
     @satellites = search.page(params[:page])
+    # Pass the satellites to Javascript for rendering in views
+    gon.satellites = @satellites
+    gon.orbits = Orbit.where(satellite_id: @satellites)
   end
 
-  # GET /satellites/1 or /satellites/1.json
+  # GET /satellites/1
   def show
   end
 
@@ -19,40 +23,35 @@ class SatellitesController < ApplicationController
   def edit
   end
 
-  # POST /satellites or /satellites.json
+  # POST /satellites
   def create
     @satellite = Satellite.new(satellite_params)
 
     respond_to do |format|
       if @satellite.save
         format.html { redirect_to @satellite, notice: "Satellite was successfully created." }
-        format.json { render :show, status: :created, location: @satellite }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @satellite.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /satellites/1 or /satellites/1.json
+  # PATCH/PUT /satellites/1
   def update
     respond_to do |format|
       if @satellite.update(satellite_params)
         format.html { redirect_to @satellite, notice: "Satellite was successfully updated." }
-        format.json { render :show, status: :ok, location: @satellite }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @satellite.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /satellites/1 or /satellites/1.json
+  # DELETE /satellites/1
   def destroy
     @satellite.destroy
     respond_to do |format|
       format.html { redirect_to satellites_url, notice: "Satellite was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import earthAsset from '../assets/Earth.glb';
-import { EARTH_RADIUS } from '../source/constants';
+import { EARTH_RADIUS, ORBIT_LINE_DIVISIONS, FOV, NEAR_VIEW_DISTANCE, FAR_VIEW_DISTANCE, } from '../source/constants';
 
 window.addEventListener("load", () => {
     var satellite_view_element = document.getElementById(('satellite-view'))
@@ -15,22 +15,33 @@ window.addEventListener("load", () => {
 
         var scene = new THREE.Scene();
 
-        var camera = new THREE.PerspectiveCamera(75, width / height, EARTH_RADIUS / 100, 100 * EARTH_RADIUS);
+        var camera = new THREE.PerspectiveCamera(FOV, width / height, NEAR_VIEW_DISTANCE, FAR_VIEW_DISTANCE);
         camera.position.set( 0, 0, EARTH_RADIUS * 2 );
         camera.lookAt( 0, 0, 0 );
 
         var controls = new OrbitControls(camera, satellite_view_element);
         controls.target.set(0, 0, 0);
 
-        const orbitHeight = 100;
-        const curve = new THREE.EllipseCurve(
-            0, 0, EARTH_RADIUS + orbitHeight, EARTH_RADIUS + orbitHeight, 0, 2 * Math.PI, true, 0
-        );
-        const points = curve.getPoints(100);
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const material = new THREE.LineBasicMaterial({ color : 0xff0000 });
-        const ellipse = new THREE.Line(geometry, material);
-        scene.add(ellipse);
+        const worldAxes = new THREE.AxesHelper(5);
+        worldAxes.setColors(new THREE.Color(), new THREE.Color(), new THREE.Color());
+        worldAxes.scale.set(EARTH_RADIUS * 100, EARTH_RADIUS * 100, EARTH_RADIUS * 100);
+        scene.add(worldAxes);
+
+        var orbits = gon.orbits;
+        var orbitLines = [];
+        for (var i = 0; i < orbits.length; i++) {
+            const curve = new THREE.EllipseCurve(
+                0, 0, EARTH_RADIUS + orbits[i].apogee, EARTH_RADIUS + orbits[i].perigee, 0, 2 * Math.PI, true, 0
+            );
+            const points = curve.getPoints(ORBIT_LINE_DIVISIONS);
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({ color : 0xff0000 });
+            const orbit = new THREE.Line(geometry, material);
+            orbit.rotateY(orbits[i].inclination * (Math.PI/180));
+
+            orbitLines.push(orbit);
+            scene.add(orbit);
+        }
 
         var loader = new GLTFLoader();
         loader.load(earthAsset, function (gltf) {

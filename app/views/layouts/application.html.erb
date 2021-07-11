@@ -9,6 +9,8 @@
 
     <%= stylesheet_pack_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
+    <!-- Pass data from Rail's controllers to Javascript -->
+    <%= Gon::Base.render_data %>
 
     <title>PerAsperaAdAstra</title>
   </head>
